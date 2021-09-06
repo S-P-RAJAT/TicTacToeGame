@@ -1,5 +1,6 @@
 package com.bridgelabz.tictactoegame;
 
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class TicTacToeGame {
@@ -7,6 +8,9 @@ public class TicTacToeGame {
 	static final Scanner scanner = new Scanner(System.in);
 	static char userLetter, computerLetter;
 	static int userNumber;
+	static boolean moves[];
+	static int winningStates[][] = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 }, { 1, 4, 7 }, { 2, 5, 8 }, { 3, 6, 9 },
+			{ 1, 5, 9 }, { 3, 5, 7 } };
 
 	public static void main(String[] args) {
 
@@ -16,16 +20,22 @@ public class TicTacToeGame {
 		computerLetter = userLetter == 'X' ? 'O' : 'X';
 		displayBoard();
 		moveIfLocationValid();
-		if(tossingOutcome()) {
+		moveIfLocationValid();
+		if (tossingOutcome()) {
 			System.out.println("Won Toss! User plays first.");
 		} else {
 			System.out.println("Lost Toss! Computer plays first.");
+		}
+		winningMove(userLetter);
+		for (boolean val : moves) {
+			System.out.println(val);
 		}
 	}
 
 	public static void createBoard() {
 
 		board = new char[10];
+		moves = new boolean[10];
 		for (int index = 1; index < board.length; index++)
 			board[index] = ' ';
 	}
@@ -37,14 +47,15 @@ public class TicTacToeGame {
 	}
 
 	public static void displayBoard() {
-		
+
 		for (int rowIndex = 0; rowIndex < 3; rowIndex++) {
-			for (int columnIndex = 0; columnIndex < 3 ; columnIndex++) {
-			System.out.print("| " + board[(rowIndex*3)+columnIndex+1]+" ");
+			for (int columnIndex = 0; columnIndex < 3; columnIndex++) {
+				System.out.print("| " + board[(rowIndex * 3) + columnIndex + 1] + " ");
 			}
 			System.out.println("| ");
 		}
 	}
+
 	public static void move() {
 		System.out.print("\nEnter a location on board to make the mark (1-9): ");
 		userNumber = scanner.nextInt();
@@ -55,11 +66,12 @@ public class TicTacToeGame {
 			move();
 		}
 	}
+
 	public static void moveIfLocationValid() {
 		move();
 		if (board[userNumber] == 'X' || board[userNumber] == 'O') {
 			displayBoard();
-			System.out.println(userNumber+"Number which is selected is not free");
+			System.out.println(userNumber + "Number which is selected is not free");
 			moveIfLocationValid();
 		} else {
 			board[userNumber] = userLetter;
@@ -67,27 +79,42 @@ public class TicTacToeGame {
 			displayBoard();
 			checkWinner();
 		}
-		
+
 	}
+
 	public static boolean tossingOutcome() {
 		System.out.print("\nEnter heads (0) or tails (1): ");
-		return (scanner.nextInt()==(int)(Math.random()*2)); 
-		
+		return (scanner.nextInt() == (int) (Math.random() * 2));
+
 	}
+
 	public static String checkWinner() {
-		int winningStates[][] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {1, 4, 7}, {2, 5, 8}, {3, 6, 9}, {1, 5, 9}, {3, 5, 7}};
 		for (int state = 0; state < winningStates.length; state++) {
-			String line =  "";
+			String line = "";
 			for (int index = 0; index < 3; index++)
 				line += board[winningStates[state][index]];
 			if (line.equals(Character.toString(userLetter).repeat(3))) {
-                return "User";
-            }
-            else if (line.equals(Character.toString(computerLetter).repeat(3))) {
-                return "Computer";
-            }
+				return "User";
+			} else if (line.equals(Character.toString(computerLetter).repeat(3))) {
+				return "Computer";
+			}
 		}
-		
+
 		return null;
+	}
+
+	public static void winningMove(char letter) {
+		int combinationOfThreeItems[][] = { { 0, 1, 2 }, { 1, 0, 2 }, { 1, 2, 0 } };
+		for (int state = 0; state < winningStates.length; state++) {
+			for (int nthCombination = 0; nthCombination < combinationOfThreeItems.length; nthCombination++) {
+
+				if (board[winningStates[state][combinationOfThreeItems[nthCombination][0]]] == letter
+				 && board[winningStates[state][combinationOfThreeItems[nthCombination][1]]] == letter
+				 && board[winningStates[state][combinationOfThreeItems[nthCombination][2]]] == ' ') {
+
+					moves[winningStates[state][combinationOfThreeItems[nthCombination][2]]] = true;
+				}
+			}
+		}
 	}
 }
