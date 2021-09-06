@@ -64,7 +64,7 @@ public class TicTacToeGame {
 		} else {
 			board[userNumber] = userLetter;
 			System.out.println(userLetter + " is marked at location " + userNumber);
-			displayBoard();
+			displayBoard(); 
 			checkWinner();
 		}
 		
@@ -87,7 +87,15 @@ public class TicTacToeGame {
                 return "Computer";
             }
 		}
-		
+		for (int index = 1; index < 10; index++) {
+            if (board[index]==' ') {
+        		return null;
+            }
+            else if (index == 9) {
+                return "draw";
+            }
+        }
 		return null;
+
 	}
 }
