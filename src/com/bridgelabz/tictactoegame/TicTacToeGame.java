@@ -99,8 +99,14 @@ public class TicTacToeGame {
 				return "Computer";
 			}
 		}
-
-		return null;
+		for (int index = 1; index < 10; index++) {
+            if (board[index]==' ') {
+        		return null;
+            }
+            else if (index == 9) {
+                return "draw";
+            }
+        }
 	}
 
 	public static void winningMove(char letter) {
