@@ -78,6 +78,7 @@ public class TicTacToeGame {
 			System.out.println(userLetter + " is marked at location " + userNumber);
 			displayBoard(); 
 			checkWinner();
+			blockingMove();
 		}
 
 	}
@@ -107,6 +108,8 @@ public class TicTacToeGame {
                 return "draw";
             }
         }
+		return null;
+
 	}
 
 	public static void winningMove(char letter) {
@@ -122,18 +125,10 @@ public class TicTacToeGame {
 				}
 			}
 		}
-<<<<<<< HEAD
-		for (int index = 1; index < 10; index++) {
-            if (board[index]==' ') {
-        		return null;
-            }
-            else if (index == 9) {
-                return "draw";
-            }
-        }
-		return null;
 
-=======
->>>>>>> tic_tac_toe_game_uc8
+
+	}
+	public static void blockingMove() {
+		winningMove(userLetter);
 	}
 }
